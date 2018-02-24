@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import Quote from "../../components/Quote/Quote";
+import Loader from "../../components/UI/Loader/Loader";
 
 class QuotesCategoryList extends Component{
 
@@ -73,7 +74,9 @@ class QuotesCategoryList extends Component{
                 </div>
             )
         } else {
-            return <p>loading ...</p>
+            return (
+                <Loader />
+            )
         }
     }
 }

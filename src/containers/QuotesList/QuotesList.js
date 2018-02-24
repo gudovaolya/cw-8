@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import {Link} from "react-router-dom";
 import Quote from "../../components/Quote/Quote";
+import Loader from "../../components/UI/Loader/Loader";
 
 class QuotesList extends Component {
 
@@ -86,7 +87,9 @@ class QuotesList extends Component {
                 </div>
             );
         } else {
-            return <p>loading ...</p>
+            return (
+                <Loader />
+            )
         }
 
     }

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import '../Forms.css';
-
+import Loader from "../../../components/UI/Loader/Loader";
 
 class EditQuote extends Component {
     state = {
@@ -55,35 +55,36 @@ class EditQuote extends Component {
 
 
     render () {
-        console.log(this.props)
-        return(
-            <div className="form-block container content">
-                <h1 className="form-block__title">Edit Quote</h1>
-                <form>
-                    <div className="form-row">
-                        <label htmlFor="category">Select category of quote</label>
-                        <select  value={this.state.quote.category}
-                                 onChange={(event) => this.changeQouteHandler(event)}
-                                 name="category"
-                        >
-                            <option value="Star Wars">Star Wars</option>
-                            <option value="Famous people">Famous people</option>
-                            <option value="Saying"> Saying</option>
-                            <option value="Humour">Humour</option>
-                            <option value="Motivational">Motivational</option>
-                        </select>
-                    </div>
-                    <div className="form-row">
-                        <input
-                            className="field"
-                            type="text"
-                            name="author"
-                            placeholder="Enter author name"
-                            onChange={(event) => this.changeQouteHandler(event)}
-                            value={this.state.quote.author}
-                        />
-                    </div>
-                    <div className="form-row">
+
+        if (!this.state.loading) {
+            return(
+                <div className="form-block container content">
+                    <h1 className="form-block__title">Edit Quote</h1>
+                    <form>
+                        <div className="form-row">
+                            <label htmlFor="category">Select category of quote</label>
+                            <select  value={this.state.quote.category}
+                                     onChange={(event) => this.changeQouteHandler(event)}
+                                     name="category"
+                            >
+                                <option value="Star Wars">Star Wars</option>
+                                <option value="Famous people">Famous people</option>
+                                <option value="Saying"> Saying</option>
+                                <option value="Humour">Humour</option>
+                                <option value="Motivational">Motivational</option>
+                            </select>
+                        </div>
+                        <div className="form-row">
+                            <input
+                                className="field"
+                                type="text"
+                                name="author"
+                                placeholder="Enter author name"
+                                onChange={(event) => this.changeQouteHandler(event)}
+                                value={this.state.quote.author}
+                            />
+                        </div>
+                        <div className="form-row">
                         <textarea
                             className="field field-area"
                             name="body"
@@ -91,13 +92,18 @@ class EditQuote extends Component {
                             onChange={(event) => this.changeQouteHandler(event)}
                             value={this.state.quote.body}
                         />
-                    </div>
-                    <div className="form-row-btn">
-                        <button className="form-btn" onClick={this.editQuoteHandler}>Edit</button>
-                    </div>
-                </form>
-            </div>
-        )
+                        </div>
+                        <div className="form-row-btn">
+                            <button className="form-btn" onClick={this.editQuoteHandler}>Edit</button>
+                        </div>
+                    </form>
+                </div>
+            )
+        } else {
+            return (
+                <Loader/>
+            )
+        }
     }
 }
 
