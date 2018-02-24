@@ -32,3 +32,13 @@ h1,h2,h3,h4,h5,h6,p{
 .content{
   padding: 30px 0;
 }
+.sidebar{
+  width: 30%;
+  float: left;
+  padding: 20px 20px 20px 0;
+}
+.main-column{
+  width: 70%;
+  float: left;
+  padding: 20px 0 20px 20px;
+}

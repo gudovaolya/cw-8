@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import '../Forms.css';
 
 
 class AddQuote extends Component {
     state = {
         quote: {
-            category: '',
+            category: 'star-wars',
             author: '',
             body: ''
         },
@@ -33,15 +34,15 @@ class AddQuote extends Component {
 
     render () {
         return(
-            <div className="form-block container content">
-                <h1 className="form-block__title">Add new post</h1>
+            <div className="form-block content">
+                <h1 className="form-block-title">Add new quote</h1>
                 <form>
                     <div className="form-row">
-                        <p>Select category of quote</p>
+                        <label htmlFor="category">Select category of quote</label>
                         <select  value={this.state.quote.category}
                                  onChange={(event) => this.changeQouteHandler(event)}
                                  name="category"
-                        >
+                                 id="category">
                             <option value="star-wars">Star Wars</option>
                             <option value="famous-people">Famous people</option>
                             <option value="saying"> Saying</option>
@@ -68,7 +69,10 @@ class AddQuote extends Component {
                             value={this.state.quote.body}
                         />
                     </div>
-                    <button className="btn" onClick={this.addQuoteHandler}>Submit</button>
+                    <div className="form-row-btn">
+                        <button className="form-btn" onClick={this.addQuoteHandler}>Publish</button>
+                    </div>
+
                 </form>
             </div>
         )

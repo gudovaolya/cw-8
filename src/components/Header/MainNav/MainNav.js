@@ -6,16 +6,11 @@ const MainNav = () => {
     return (
         <nav className="main-nav container">
             <ul>
-                <li><NavLink
-                    exact
-                    to="/"
-                    activeClassName="active"
-                >Quotes</NavLink>
+                <li>
+                    <NavLink exact to="/" >Quotes</NavLink>
                 </li>
                 <li>
-                    <NavLink
-                        to="/add_quotes"
-                    >Add Quotes</NavLink>
+                    <NavLink to="/add_quote">Add New Quote</NavLink>
                 </li>
             </ul>
         </nav>
