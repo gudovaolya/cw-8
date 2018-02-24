@@ -21,8 +21,6 @@ class EditQuote extends Component {
         this.setState({quote: quoteNew});
     };
 
-
-
     editQuoteHandler = (event) => {
         event.preventDefault();
         this.setState({loading: true});
@@ -68,11 +66,11 @@ class EditQuote extends Component {
                                  onChange={(event) => this.changeQouteHandler(event)}
                                  name="category"
                         >
-                            <option value="star-wars">Star Wars</option>
-                            <option value="famous-people">Famous people</option>
-                            <option value="saying"> Saying</option>
-                            <option value="humour">Humour</option>
-                            <option value="motivational">Motivational</option>
+                            <option value="Star Wars">Star Wars</option>
+                            <option value="Famous people">Famous people</option>
+                            <option value="Saying"> Saying</option>
+                            <option value="Humour">Humour</option>
+                            <option value="Motivational">Motivational</option>
                         </select>
                     </div>
                     <div className="form-row">

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import {Link} from "react-router-dom";
 import Quote from "../../components/Quote/Quote";
-
 
 class QuotesList extends Component {
 
@@ -52,14 +52,21 @@ class QuotesList extends Component {
         });
     };
 
-
     render () {
-        console.log(this.state.quotes);
-        console.log(this.props);
         if (!this.state.loading) {
             return (
                 <div className="container content clearfix">
                     <div className="sidebar">
+                        <div className="categories">
+                            {this.state.quotes.map(quote => (
+                                <Link to={`/category/${quote.category}`}
+                                      className="category-link"
+                                      key={quote.id}
+                                >
+                                    {quote.category}
+                                </Link>
+                            ))}
+                        </div>
 
                     </div>
                     <div className="main-column">
