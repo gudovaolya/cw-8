@@ -20,13 +20,21 @@ class QuotesList extends Component {
 
             for (let key in response.data) {
                 quotes.push({...response.data[key], id: key});
-                const elem = categories.find(category => response.data[key].category === category);
-                if (!elem) {
-                    categories.push(response.data[key].category)
-                }
-                console.log(categories)
-            }
+                const elem = categories.find(item => response.data[key].category === item.category);
 
+                if (!elem) {
+                    categories.push({
+                        category: response.data[key].category,
+                        counter: 1
+                    })
+                } else {
+                    categories.forEach(item => {
+                        if (item.category === response.data[key].category) {
+                            item.counter++;
+                        }
+                    })
+                }
+            }
             this.setState({quotes, categories, loading: false});
         })
     }
@@ -35,9 +43,20 @@ class QuotesList extends Component {
         this.setState({loading: true});
         const index = this.state.quotes.findIndex(item => item.id === id);
         const quotes = [...this.state.quotes];
+        const categories = this.state.categories;
+        const elem = categories.find(item => quotes[index].category === item.category);
+        categories.forEach((item, index) => {
+            if (item.category === elem.category) {
+                item.counter--;
+                if (item.counter === 0) {
+                    categories.splice(index,1);
+                }
+            }
+        });
         quotes.splice(index,1);
+
         axios.delete(`/quotes/${id}.json`).then(response => {
-            this.setState({quotes, loading:false});
+            this.setState({quotes, categories, loading:false});
         }).finally(() => {
             this.props.history.push('/');
         });
@@ -61,17 +80,19 @@ class QuotesList extends Component {
     };
 
     render () {
+        console.log(this.state.categories)
+
         if (!this.state.loading) {
             return (
                 <div className="container content clearfix">
                     <div className="sidebar">
                         <div className="categories">
-                            {this.state.categories.map(category => (
-                                <Link to={`/category/${category}`}
+                            {this.state.categories.map(item => (
+                                <Link to={`/category/${item.category}`}
                                       className="category-link"
-                                      key={category}
+                                      key={item.category}
                                 >
-                                    {category}
+                                    {item.category}
                                 </Link>
                             ))}
                         </div>
