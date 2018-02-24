@@ -1,8 +1,12 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import '../Forms.css';
-import Loader from "../../../components/UI/Loader/Loader";
 
+import {Editor} from "react-draft-wysiwyg";
+import {EditorState} from "draft-js";
+import {convertToHTML} from "draft-convert";
+import Loader from "../../../components/UI/Loader/Loader";
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import '../Forms.css';
 
 class AddQuote extends Component {
     state = {
@@ -11,6 +15,7 @@ class AddQuote extends Component {
             author: '',
             body: ''
         },
+        editorState: EditorState.createEmpty(),
         loading: false
     };
 
@@ -20,6 +25,12 @@ class AddQuote extends Component {
         const value = event.target.value;
         quoteNew[key] = value;
         this.setState({quote: quoteNew});
+    };
+
+    onEditorStateChange = (editorState) => {
+        const quote = {...this.state.quote};
+        quote.body = convertToHTML(editorState.getCurrentContent());
+        this.setState({editorState, quote});
     };
 
     addQuoteHandler = (event) => {
@@ -64,13 +75,13 @@ class AddQuote extends Component {
                             />
                         </div>
                         <div className="form-row">
-                        <textarea
-                            className="field field-area"
-                            name="body"
-                            placeholder="Enter text quote"
-                            onChange={(event) => this.changeQouteHandler(event)}
-                            value={this.state.quote.body}
-                        />
+                            <Editor
+                                editorState={this.state.editorState}
+                                toolbarClassName="toolbarEditor"
+                                wrapperClassName="wrapperEditor"
+                                editorClassName="editor"
+                                onEditorStateChange={this.onEditorStateChange}
+                            />
                         </div>
                         <div className="form-row-btn">
                             <button className="form-btn" onClick={this.addQuoteHandler}>Publish</button>

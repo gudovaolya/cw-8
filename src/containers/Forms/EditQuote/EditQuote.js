@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import {Editor} from "react-draft-wysiwyg";
+import {EditorState} from "draft-js";
+import {convertToHTML, convertFromHTML} from "draft-convert";
+
 import '../Forms.css';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import Loader from "../../../components/UI/Loader/Loader";
 
 class EditQuote extends Component {
@@ -10,6 +15,7 @@ class EditQuote extends Component {
             author: '',
             body: ''
         },
+        editorState: EditorState.createEmpty(),
         loading: false
     };
 
@@ -19,6 +25,12 @@ class EditQuote extends Component {
         const value = event.target.value;
         quoteNew[key] = value;
         this.setState({quote: quoteNew});
+    };
+
+    onEditorStateChange = (editorState) => {
+        const quote = {...this.state.quote};
+        quote.body = convertToHTML(editorState.getCurrentContent());
+        this.setState({editorState, quote});
     };
 
     editQuoteHandler = (event) => {
@@ -41,10 +53,16 @@ class EditQuote extends Component {
     showValueInFormFields = () => {
         const params = new URLSearchParams(this.props.location.search);
         const quote = {};
+        let editorState = null;
         for (let param of params.entries()) {
-            quote[param[0]] = param[1];
+            if (param[0] === 'body') {
+                editorState = EditorState.createWithContent(convertFromHTML(param[1]));
+                quote['body'] = editorState;
+            } else {
+                quote[param[0]] = param[1];
+            }
         }
-        this.setState({quote});
+        this.setState({quote, editorState});
     };
 
     componentDidMount(){
@@ -52,7 +70,6 @@ class EditQuote extends Component {
             this.showValueInFormFields();
         }
     };
-
 
     render () {
 
@@ -85,13 +102,13 @@ class EditQuote extends Component {
                             />
                         </div>
                         <div className="form-row">
-                        <textarea
-                            className="field field-area"
-                            name="body"
-                            placeholder="Enter text quote"
-                            onChange={(event) => this.changeQouteHandler(event)}
-                            value={this.state.quote.body}
-                        />
+                            <Editor
+                                editorState={this.state.editorState}
+                                toolbarClassName="toolbarEditor"
+                                wrapperClassName="wrapperEditor"
+                                editorClassName="editor"
+                                onEditorStateChange={this.onEditorStateChange}
+                            />
                         </div>
                         <div className="form-row-btn">
                             <button className="form-btn" onClick={this.editQuoteHandler}>Edit</button>

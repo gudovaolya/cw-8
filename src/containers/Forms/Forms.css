@@ -51,3 +51,8 @@
     border: none;
     border-radius: 4px;
 }
+.editor{
+    border: 1px solid #6fbbc8;
+    margin: 10px 0 20px;
+    padding: 0 10px;
+}
