@@ -8,6 +8,7 @@ class QuotesList extends Component {
 
     state = {
         quotes: [],
+        categories: [],
         loading: false
     };
 
@@ -15,12 +16,18 @@ class QuotesList extends Component {
         this.setState({loading: true});
         axios.get('/quotes.json').then(response =>{
             const quotes = [];
+            const categories = [];
 
             for (let key in response.data) {
                 quotes.push({...response.data[key], id: key});
+                const elem = categories.find(category => response.data[key].category === category);
+                if (!elem) {
+                    categories.push(response.data[key].category)
+                }
+                console.log(categories)
             }
 
-            this.setState({quotes, loading: false});
+            this.setState({quotes, categories, loading: false});
         })
     }
 
@@ -59,12 +66,12 @@ class QuotesList extends Component {
                 <div className="container content clearfix">
                     <div className="sidebar">
                         <div className="categories">
-                            {this.state.quotes.map(quote => (
-                                <Link to={`/category/${quote.category}`}
+                            {this.state.categories.map(category => (
+                                <Link to={`/category/${category}`}
                                       className="category-link"
-                                      key={quote.id}
+                                      key={category}
                                 >
-                                    {quote.category}
+                                    {category}
                                 </Link>
                             ))}
                         </div>
