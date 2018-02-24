@@ -57,7 +57,7 @@ class EditQuote extends Component {
         for (let param of params.entries()) {
             if (param[0] === 'body') {
                 editorState = EditorState.createWithContent(convertFromHTML(param[1]));
-                quote['body'] = editorState;
+                // quote['body'] = editorState;
             } else {
                 quote[param[0]] = param[1];
             }
